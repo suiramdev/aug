@@ -1,0 +1,36 @@
+{
+  "name": "aug",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "suiramdev",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "typings": "dist/index.d.ts",
+  "bin": {
+    "aug": "./dist/bin/aug.mjs"
+  },
+  "scripts": {
+    "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript && pnpm link .",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "prettier": "@vercel/style-guide/prettier",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "glob": "^11.0.0",
+    "playwright": "^1.49.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.1.1",
+    "@types/glob": "^8.1.0",
+    "@types/node": "^22.10.0",
+    "@vercel/style-guide": "^6.0.0",
+    "eslint": "^9.15.0",
+    "prettier": "^3.4.1",
+    "rollup": "^4.27.4",
+    "rollup-plugin-dts": "^6.1.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.2"
+  }
+}
