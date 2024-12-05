@@ -2,7 +2,8 @@ import { Config, resolveConfig } from '../../config';
 import { program } from 'commander';
 import path from 'path';
 import { glob } from 'glob';
-import { runFile } from '../worker';
+import { Worker as JestWorker } from 'jest-worker';
+import { SuiteRunner } from '../../api/suite';
 
 program
   .command('run')
@@ -24,23 +25,28 @@ async function run(options: { config: string }) {
     process.exit(1);
   }
 
-  try {
-    const files: string[] = [];
-    for (const pattern of config.patterns) {
-      const matchedFiles = await glob(pattern);
-      files.push(...matchedFiles);
-    }
+  const files: string[] = [];
+  for (const pattern of config.patterns) {
+    const matchedFiles = await glob(pattern);
+    files.push(...matchedFiles);
+  }
 
-    if (files.length === 0) {
-      console.error('No files found to run');
-      process.exit(1);
-    }
-
-    for (const file of files) {
-      await runFile(file);
-    }
-  } catch (error) {
-    console.error('Failed to run files:', error);
+  if (files.length === 0) {
+    console.error('No files found to run');
     process.exit(1);
   }
+
+  const root = path.dirname(new URL(import.meta.url).pathname);
+  const worker = new JestWorker(path.join(root, 'worker.js'), {
+    enableWorkerThreads: true,
+  });
+
+  const results = await Promise.all(
+    // @ts-expect-error
+    files.map((file) => worker.runScenario(file)),
+  );
+
+  console.log(results);
+
+  worker.end();
 }

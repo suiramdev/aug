@@ -1,4 +1,4 @@
-import type { Config } from 'aug';
+import type { Config } from '../dist';
 
 export const config: Config = {
   outdir: 'dist',

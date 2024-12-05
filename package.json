@@ -8,17 +8,15 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
-  "bin": {
-    "aug": "./dist/bin/aug.mjs"
-  },
   "scripts": {
-    "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript && pnpm link .",
+    "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
     "preinstall": "npx only-allow pnpm"
   },
   "prettier": "@vercel/style-guide/prettier",
   "dependencies": {
     "commander": "^12.1.0",
     "glob": "^11.0.0",
+    "jest-worker": "^29.7.0",
     "playwright": "^1.49.0"
   },
   "devDependencies": {

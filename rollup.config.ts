@@ -11,16 +11,15 @@ const bundle = (config: RollupOptions): RollupOptions => ({
 export default [
   bundle({
     plugins: [typescript({ tsconfig: 'tsconfig.build.json' })],
+    input: 'src/index.ts',
     output: [
       {
         file: `dist/index.js`,
         format: 'cjs',
-        sourcemap: true,
       },
       {
         file: `dist/index.mjs`,
         format: 'es',
-        sourcemap: true,
       },
     ],
   }),
@@ -42,17 +41,18 @@ export default [
     input: 'src/program/index.ts',
     output: [
       {
-        file: `dist/bin/aug.js`,
+        file: `dist/cli.js`,
         format: 'cjs',
-        sourcemap: true,
-        banner: '#!/usr/bin/env node --experimental-vm-modules',
       },
       {
-        file: `dist/bin/aug.mjs`,
+        file: `dist/cli.mjs`,
         format: 'es',
-        sourcemap: true,
-        banner: '#!/usr/bin/env node --experimental-vm-modules',
       },
     ],
+  }),
+  bundle({
+    plugins: [typescript({ tsconfig: 'tsconfig.build.json' })],
+    input: 'src/worker.ts',
+    output: { file: 'dist/worker.js', format: 'cjs' },
   }),
 ];
